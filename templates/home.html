@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BabyAlevel - Computer Science</title>
+  <link rel="icon" type="png" href="favicon.png">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #18120a;
+      color: #ffe7c2;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 900px;
+      margin: 3.5rem auto 0 auto;
+      background: #23190e;
+      border-radius: 38px;
+      box-shadow: 0 12px 48px #ffb34722, 0 2.5px 16px #ffb34722;
+      padding: 3rem 2rem 2.5rem 2rem;
+      border: 2px solid #ffb347;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #ffb347;
+      font-size: 2.7rem;
+      font-weight: 900;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 12px #ffb34722;
+    }
+    .welcome-desc {
+      font-size: 1.25rem;
+      color: #23190e;
+      background: linear-gradient(90deg, #ffb347 80%, #ffe7c2 100%);
+      padding: 1.3em 2.2em;
+      border-radius: 24px;
+      box-shadow: 0 2px 12px #ffb34722;
+      border-left: 8px solid #ffe7c2;
+      font-weight: 700;
+      margin-bottom: 2.2rem;
+      text-align: center;
+      max-width: 700px;
+    }
+    .main-image {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 32px;
+      margin: 2.2rem 0 2.2rem 0;
+      box-shadow: 0 4px 32px #ffb34722, 0 2px 8px #ffb34722;
+      border: 4px solid #ffb347;
+      display: block;
+      object-fit: cover;
+      background: #232526;
+      transition: box-shadow 0.33s cubic-bezier(.4,0,.2,1), border-radius 0.33s cubic-bezier(.4,0,.2,1);
+    }
+    h2 {
+      color: #ffb347;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 2.2rem;
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
+    .level-select {
+      display: flex;
+      gap: 2.5rem;
+      margin-bottom: 2.5rem;
+      justify-content: center;
+    }
+    .level-btn {
+      background: #23190e;
+      color: #ffb347;
+      border: 2.5px solid #ffb347;
+      border-radius: 24px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      padding: 1.2em 2.5em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-radius 0.2s;
+      box-shadow: 0 2px 12px #ffb34722;
+    }
+    .level-btn.selected, .level-btn:hover {
+      background: #ffb347;
+      color: #23190e;
+      border-radius: 32px;
+      box-shadow: 0 6px 24px #ffb34744;
+    }
+    .topics-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      width: 100%;
+      justify-content: center;
+      margin-top: 2.5rem;
+      box-sizing: border-box;
+      animation: fadeInUp 0.7s cubic-bezier(.4,2,.6,1);
+    }
+    .topic-menu-item {
+      background: #18120a;
+      border: 2.5px solid #ffb347;
+      border-radius: 18px;
+      box-shadow: 0 4px 16px #ffb34722;
+      padding: 1.1em 1.7em;
+      display: flex;
+      align-items: center;
+      gap: 0.7em;
+      font-size: 1.13rem;
+      font-weight: 700;
+      color: #ffb347;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s, border-radius 0.2s;
+      text-align: left;
+      min-width: 160px;
+      max-width: 100%;
+      outline: none;
+      user-select: none;
+      animation: popIn 0.7s cubic-bezier(.4,2,.6,1);
+    }
+    .topic-menu-item .topic-icon {
+      font-size: 1.5em;
+      display: inline-block;
+      margin-right: 0.5em;
+      filter: drop-shadow(0 2px 8px #ffb34744);
+      transition: transform 0.2s;
+    }
+    .topic-menu-item:hover, .topic-menu-item:focus {
+      background: #ffb347;
+      color: #23190e;
+      border: 2.5px solid #ffe7c2;
+      border-radius: 28px;
+      box-shadow: 0 8px 32px #ffb34744;
+    }
+    .topic-menu-item:hover .topic-icon, .topic-menu-item:focus .topic-icon {
+      transform: scale(1.18) rotate(-8deg);
+      filter: drop-shadow(0 2px 8px #ffe7c2);
+    }
+    .olevel-menu .topic-menu-item {
+      animation: olevelPop 0.7s cubic-bezier(.4,2,.6,1);
+      border-color: #ff7f50;
+      color: #ff7f50;
+    }
+    .olevel-menu .topic-menu-item .topic-icon {
+      color: #ff7f50;
+      filter: drop-shadow(0 2px 8px #ff7f5044);
+      animation: olevelIconPulse 1.2s infinite alternate;
+    }
+    .olevel-menu .topic-menu-item:hover, .olevel-menu .topic-menu-item:focus {
+      background: #ff7f50;
+      color: #23190e;
+      border: 2.5px solid #ffe7c2;
+      border-radius: 28px;
+      box-shadow: 0 8px 32px #ff7f5044;
+    }
+    .olevel-menu .topic-menu-item:hover .topic-icon, .olevel-menu .topic-menu-item:focus .topic-icon {
+      transform: scale(1.18) rotate(8deg);
+      filter: drop-shadow(0 2px 8px #ffe7c2);
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.98); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes iconBounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-8px) scale(1.1); }
+    }
+    @keyframes olevelPop {
+      from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+      to { opacity: 1; transform: scale(1) rotate(0); }
+    }
+    @keyframes olevelIconPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.18); }
+    }
+    @media (max-width: 900px) {
+      .container { padding: 1.5rem 0.5rem; border-radius: 24px; }
+      .main-image { max-width: 100%; margin: 1.2rem 0; border-radius: 18px; }
+      .topics-menu { gap: 0.7rem; }
+      .topic-menu-item { font-size: 1rem; min-width: 120px; padding: 0.7em 1em; border-radius: 12px; }
+      .topic-menu-item .topic-icon { font-size: 1.1em; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0.7rem 0.2rem; border-radius: 12px; margin: 1.2rem auto 0 auto; }
+      h1 { font-size: 1.3rem; padding: 0.1em 0.4em; border-radius: 10px; }
+      .welcome-desc { font-size: 1rem; padding: 0.7em 1em; border-radius: 12px; border-left: 4px solid #ffe7c2; }
+      .main-image { max-width: 100%; margin: 0.7rem 0; border-radius: 10px; border-width: 2px; }
+      h2 { font-size: 1.3rem; padding: 0.1em 0.4em; border-radius: 10px; }
+      .level-select { gap: 1rem; }
+      .level-btn { font-size: 1rem; padding: 0.5em 1em; border-radius: 16px; }
+      .topics-menu { gap: 1rem; }
+      .topic-menu-item { font-size: 0.95rem; min-width: 100px; padding: 0.5em 0.7em; border-radius: 10px; }
+      .topic-menu-item .topic-icon { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to BabyAlevel</h1>
+    <div class="welcome-desc">
+      Unlock your potential with BabyAlevel's comprehensive Computer Science platform. Whether you are preparing for O Level or A Level, our curated resources, interactive topics, and professional design will help you master every concept. Start your journey to academic excellence today!
+    </div>
+    <img class="main-image" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Computer Science Illustration">
+    <h2>Select Your Level</h2>
+    <div class="level-select">
+      <button class="level-btn" id="olevelBtn" onclick="window.location.href='/olevel'">O Level</button>
+      <button class="level-btn" id="alevelBtn" onclick="window.location.href='/alevel'">A Level</button>
+    </div>
+    <div id="topicsMenu" class="topics-menu" style="display:none;"></div>
+  </div>
+  <script>
+    const olevelSections = [
+      { name: 'Data Repre', icon: '💾' },
+      { name: 'Communications', icon: '📡' },
+      { name: 'Hardware', icon: '🖥️' },
+      { name: 'Software', icon: '💻' },
+      { name: 'Security', icon: '🔒' },
+      { name: 'Ethics', icon: '⚖️' },
+      { name: 'Databases', icon: '🗄️' },
+      { name: 'AI', icon: '🤖' },
+      { name: 'Data Types', icon: '🔢' },
+      { name: 'Algo desgn and problem solving', icon: '🧩' },
+      { name: 'Programming', icon: '👨‍💻' },
+      { name: 'Software Devolopment', icon: '🛠️' },
+      { name: 'Computational thinkinh', icon: '🧠' }
+    ];
+    const alevelSections = [
+      { name: 'Data Representation', icon: '💾', path: '/alevel/data_representation' },
+      { name: 'Communications', icon: '📡', path: '/alevel/communications' },
+      { name: 'Hardware', icon: '🖥️', path: '/alevel/hardware' },
+      { name: 'Software', icon: '💻', path: '/alevel/software' },
+      { name: 'Security', icon: '🔒', path: '/alevel/security' },
+      { name: 'Ethics', icon: '⚖️', path: '/alevel/ethics' },
+      { name: 'Databases', icon: '🗄️', path: '/alevel/databases' },
+      { name: 'Programming', icon: '👨‍💻', path: '/alevel/programming' },
+      { name: 'Data Types', icon: '🔢', path: '/alevel/data_types' },
+      { name: 'Algo desgn', icon: '🧩', path: '/alevel/algo_desgn' },
+      { name: 'Software', icon: '💻', path: '/alevel/software' },
+      { name: 'Software Devolopment', icon: '🛠️', path: '/alevel/software_devolopment' }
+    ];
+    const topicsMenu = document.getElementById('topicsMenu');
+    document.getElementById('olevelBtn').onclick = function() {
+      this.classList.add('selected');
+      document.getElementById('alevelBtn').classList.remove('selected');
+      renderTopicsMenu(olevelSections, true);
+    };
+    document.getElementById('alevelBtn').onclick = function() {
+      this.classList.add('selected');
+      document.getElementById('olevelBtn').classList.remove('selected');
+      renderTopicsMenu(alevelSections, false);
+    };
+    function renderTopicsMenu(sections, isOlevel) {
+      if (!sections.length) {
+        topicsMenu.style.display = 'none';
+        topicsMenu.innerHTML = '';
+        return;
+      }
+      topicsMenu.style.display = 'flex';
+      topicsMenu.className = 'topics-menu' + (isOlevel ? ' olevel-menu' : '');
+      topicsMenu.innerHTML = '';
+      sections.forEach(sec => {
+        const item = document.createElement('button');
+        item.className = 'topic-menu-item';
+        item.type = 'button';
+        item.tabIndex = 0;
+        const icon = document.createElement('span');
+        icon.className = 'topic-icon';
+        icon.textContent = sec.icon || '📚';
+        item.appendChild(icon);
+        const label = document.createElement('span');
+        label.textContent = sec.name || sec;
+        item.appendChild(label);
+        if (!isOlevel && sec.path) {
+          item.onclick = () => { window.location.href = sec.path; };
+        }
+        topicsMenu.appendChild(item);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}BabyAlevel{% endblock %}</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #18120a;
+      color: #ffe7c2;
+      margin: 0;
+      min-height: 100vh;
+    }
+    header {
+      background: #23190e;
+      color: #ffb347;
+      padding: 2.2rem 3.5rem 1.7rem 3.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 24px #ffb34722;
+      border-bottom: 4px solid #ffb347;
+      border-radius: 0 0 32px 32px;
+    }
+    header h1 {
+      margin: 0;
+      font-weight: 900;
+      font-size: 2.3rem;
+      letter-spacing: 0.04em;
+      color: #ffb347;
+      background: none;
+      text-shadow: 0 2px 12px #ffb34722;
+      border-radius: 18px;
+      padding: 0.2em 0.8em;
+    }
+    header nav {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    header nav a {
+      color: #ffb347;
+      background: #23190e;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1.13rem;
+      letter-spacing: 0.03em;
+      padding: 0.7em 1.7em;
+      border-radius: 24px;
+      border: 2px solid #ffb347;
+      margin-left: 1rem;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-radius 0.2s;
+    }
+    header nav a:hover {
+      background: #ffb347;
+      color: #23190e;
+      box-shadow: 0 6px 24px #ffb34744;
+      border-radius: 32px;
+    }
+    main {
+      max-width: 1100px;
+      margin: 3.5rem auto 0 auto;
+      background: #23190e;
+      border-radius: 38px;
+      box-shadow: 0 12px 48px #ffb34722, 0 2.5px 16px #ffb34722;
+      padding: 2.5rem;
+      min-height: 600px;
+      border: 2px solid #ffb347;
+    }
+    footer {
+      width: 100%;
+      background: #23190e;
+      color: #ffb347;
+      text-align: center;
+      padding: 2.2rem 0 1.2rem 0;
+      font-size: 1.08rem;
+      letter-spacing: 0.03em;
+      margin-top: 4rem;
+      border-top: 4px solid #ffb347;
+      box-shadow: 0 -4px 24px #ffb34722;
+      border-radius: 32px 32px 0 0;
+    }
+    @media (max-width: 900px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.2rem 1rem 1rem 1rem;
+        border-radius: 0 0 18px 18px;
+      }
+      header h1 {
+        font-size: 1.5rem;
+        padding: 0.1em 0.4em;
+        border-radius: 10px;
+      }
+      header nav {
+        gap: 0.7rem;
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 0.7rem;
+      }
+      header nav a {
+        font-size: 1rem;
+        padding: 0.5em 1em;
+        border-radius: 16px;
+      }
+      main {
+        padding: 1.2rem 0.5rem;
+        border-radius: 18px;
+        min-height: unset;
+      }
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+        border-radius: 0 0 10px 10px;
+      }
+      header h1 {
+        font-size: 1.1rem;
+        padding: 0.05em 0.2em;
+        border-radius: 6px;
+      }
+      header nav {
+        gap: 0.4rem;
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 0.4rem;
+      }
+      header nav a {
+        font-size: 0.95rem;
+        padding: 0.3em 0.7em;
+        border-radius: 10px;
+      }
+      main {
+        padding: 0.5rem 0.1rem;
+        border-radius: 8px;
+        margin: 1.2rem auto 0 auto;
+        min-height: unset;
+        box-shadow: 0 1px 4px #ffb34722;
+      }
+      footer {
+        font-size: 0.95rem;
+        padding: 1rem 0 0.7rem 0;
+        border-radius: 12px 12px 0 0;
+        margin-top: 1.5rem;
+      }
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header>
+    <h1>BabyAlevel</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/logout">Logout</a>
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    &copy; 2025 BabyAlevel &mdash; Empowering Learners Everywhere
+  </footer>
+</body>
+</html>
