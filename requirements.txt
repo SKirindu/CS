@@ -2,6 +2,7 @@ Flask
 Flask-SQLAlchemy
 Werkzeug
 gunicorn
+Flask-User 
 python-dotenv
 Flask-Migrate
 Flask-Login
