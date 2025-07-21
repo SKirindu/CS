@@ -3,107 +3,163 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login</title>
+  <title>Login | BabyAlevel</title>
+  <link rel="icon" type="png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --black: #111;
-      --white: #fff;
-      --gray: #f4f4f4;
-      --gray-dark: #222;
-      --gray-border: #ccc;
+      --black: #18120a;
+      --white: #ffe7c2;
+      --gold: #ffb347;
+      --gray: #23190e;
+      --gray-border: #ffb347;
       --shadow: 0 8px 32px 0 rgba(24,24,24,0.13);
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--black);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
-      color: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .container {
-      background: var(--white);
-      padding: 2.5rem 2.2rem 2.2rem 2.2rem;
-      border-radius: 18px;
+      background: var(--gray);
+      padding: 3.2rem 2.5rem 2.7rem 2.5rem;
+      border-radius: 32px;
       box-shadow: var(--shadow);
       width: 100%;
-      max-width: 370px;
-      border: 1.5px solid var(--gray-border);
+      max-width: 400px;
+      border: 2.5px solid var(--gray-border);
       display: flex;
       flex-direction: column;
       align-items: center;
+      box-sizing: border-box;
+      margin: 0 auto;
+      position: relative;
+      top: 0;
     }
     h2 {
       margin-bottom: 2rem;
-      color: var(--black);
+      color: var(--gold);
       font-size: 2.1rem;
-      font-weight: 800;
+      font-weight: 900;
       text-align: center;
       letter-spacing: 0.03em;
-      text-shadow: 0 2px 12px #0001;
+      text-shadow: 0 2px 12px #ffb34722;
     }
     input[type="text"], input[type="password"] {
       width: 100%;
       padding: 0.85rem 1rem;
       margin-bottom: 1.3rem;
-      border: 1.5px solid var(--gray-border);
-      border-radius: 7px;
+      border: 2px solid var(--gray-border);
+      border-radius: 10px;
       font-size: 1.08rem;
-      background: var(--gray);
+      background: var(--white);
       color: var(--black);
       transition: border 0.2s, box-shadow 0.2s;
-      box-shadow: 0 1.5px 8px #0001;
+      box-shadow: 0 1.5px 8px #ffb34722;
       outline: none;
     }
     input[type="text"]:focus, input[type="password"]:focus {
-      border: 1.5px solid var(--black);
-      box-shadow: 0 2px 16px #0002;
-      background: #fff;
+      border: 2px solid var(--gold);
+      box-shadow: 0 2px 16px #ffb34744;
+      background: #fffbe7;
     }
     button {
       width: 100%;
       padding: 0.9rem;
-      background: var(--black);
+      background: var(--gold);
       border: none;
-      color: var(--white);
+      color: var(--black);
       font-size: 1.13rem;
       font-weight: 700;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
       transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 12px #0002;
+      box-shadow: 0 2px 12px #ffb34722;
       margin-top: 0.2rem;
       letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
     }
     button:hover {
-      background: var(--gray-dark);
-      box-shadow: 0 4px 24px #0003;
+      background: var(--white);
+      color: var(--gold);
+      box-shadow: 0 4px 24px #ffb34744;
     }
     .register-link {
       margin-top: 1.5rem;
       text-align: center;
       font-size: 1rem;
-      color: var(--black);
+      color: var(--white);
     }
     .register-link a {
-      color: var(--black);
+      color: var(--gold);
       text-decoration: underline;
-      font-weight: 600;
+      font-weight: 700;
       transition: color 0.2s;
     }
     .register-link a:hover {
-      color: var(--gray-dark);
+      color: var(--white);
       text-decoration: underline;
     }
+    .error-box {
+      color: var(--white);
+      background: #c0392b;
+      border: 2px solid #ffb347;
+      padding: 0.7em 1em;
+      border-radius: 12px;
+      margin-bottom: 1.2em;
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      box-shadow: 0 2px 12px #ffb34722;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7em;
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    .error-box i {
+      font-size: 1.3em;
+    }
+    @keyframes shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(4px); }
+      30%, 50%, 70% { transform: translateX(-8px); }
+      40%, 60% { transform: translateX(8px); }
+    }
     @media (max-width: 500px) {
-      .container {
-        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
-        border-radius: 0;
-        max-width: 100vw;
+      html, body {
         min-height: 100vh;
+        height: 100vh;
+        width: 100vw;
+        overflow-x: hidden;
+        display: block;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+      }
+      .container {
+        padding: 2rem 0.7rem 2rem 0.7rem;
+        border-radius: 18px;
+        max-width: 95vw;
+        min-height: unset;
         box-shadow: none;
+        box-sizing: border-box;
+        overflow-y: auto;
+        margin: 0 auto;
+        position: relative;
+        top: 0;
       }
       h2 {
         font-size: 1.3rem;
@@ -111,6 +167,9 @@
       input[type="text"], input[type="password"] {
         font-size: 0.98rem;
         padding: 0.7rem 0.7rem;
+        min-width: 0;
+        width: 100%;
+        box-sizing: border-box;
       }
       button {
         font-size: 1rem;
@@ -126,14 +185,12 @@
   <div class="container">
     <h2>Login</h2>
     {% if error %}
-      <div style="color: #fff; background: #222; border: 1px solid #ccc; padding: 0.7em 1em; border-radius: 7px; margin-bottom: 1.2em; text-align: center; font-weight: 600; letter-spacing: 0.01em;">
-        {{ error }}
-      </div>
+      <div class="error-box"><i class="fas fa-exclamation-triangle"></i> {{ error }}</div>
     {% endif %}
     <form method="POST" action="/login">
       <input type="text" name="username" placeholder="Username" required autofocus />
       <input type="password" name="password" placeholder="Password" required />
-      <button type="submit">Log In</button>
+      <button type="submit"><i class="fas fa-sign-in-alt"></i> Log In</button>
     </form>
     <div class="register-link">
       Don't have an account? <a href="/register">Register here</a>

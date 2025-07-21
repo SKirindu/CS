@@ -15,14 +15,8 @@ class User(db.Model):
     password = db.Column(db.String(150), nullable=False)
 
 @app.route('/')
-def home():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))
-    user = User.query.get(session['user_id'])
-    if not user:
-        session.pop('user_id', None)
-        return redirect(url_for('login'))
-    return render_template('home.html', user=user)
+def main():
+    return render_template('main.html')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -44,10 +38,13 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password, password):
+        if not user:
+            error = 'Username does not exist.'
+        elif not check_password_hash(user.password, password):
+            error = 'Incorrect password. Please try again.'
+        else:
             session['user_id'] = user.id
-            return redirect(url_for('home'))
-        error = 'Invalid username or password. Please try again.'
+            return render_template('home.html', user=user)
     return render_template('login.html', error=error)
 
 @app.route('/logout')

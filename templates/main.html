@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to BabyAlevel</title>
+    <link rel="icon" type="png" href="favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #18120a;
+            color: #ffe7c2;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .hero {
+            background: linear-gradient(120deg, #23190e 0%, #18120a 100%);
+            color: #ffb347;
+            padding: 60px 20px 40px 20px;
+            text-align: center;
+            border-bottom: 2px solid #ffb347;
+            box-shadow: 0 8px 32px #ffb34722;
+        }
+        .hero h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 900;
+            letter-spacing: 0.01em;
+            text-shadow: 0 2px 12px #ffb34722;
+        }
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #ffe7c2;
+            background: linear-gradient(90deg, #ffb347 80%, #ffe7c2 100%);
+            padding: 1.3em 2.2em;
+            border-radius: 24px;
+            box-shadow: 0 2px 12px #ffb34722;
+            border-left: 8px solid #ffe7c2;
+            font-weight: 700;
+            display: inline-block;
+            max-width: 700px;
+        }
+        .hero .buttons {
+            margin-top: 20px;
+        }
+        .hero .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            margin: 0 10px;
+            font-size: 1em;
+            border-radius: 30px;
+            border: 2.5px solid #ffb347;
+            background: #23190e;
+            color: #ffb347;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 8px #ffb34722;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-radius 0.2s;
+            text-decoration: none;
+        }
+        .hero .btn.signup {
+            color: #23190e;
+            background: #ffb347;
+            border: 2.5px solid #ffe7c2;
+        }
+        .hero .btn:hover {
+            background: #ffb347;
+            color: #23190e;
+            border-radius: 32px;
+            box-shadow: 0 6px 24px #ffb34744;
+        }
+        .hero .btn.signup:hover {
+            background: #ffe7c2;
+            color: #23190e;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px 20px;
+            background: #23190e;
+            border-radius: 38px;
+            box-shadow: 0 12px 48px #ffb34722, 0 2.5px 16px #ffb34722;
+            border: 2px solid #ffb347;
+            margin: 3.5rem auto 0 auto;
+            max-width: 1100px;
+        }
+        .feature {
+            background: #18120a;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px #ffb34722;
+            width: 320px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 2px solid #ffb347;
+        }
+        .feature img {
+            width: 80px;
+            margin-bottom: 18px;
+            border-radius: 18px;
+            background: #232526;
+            box-shadow: 0 4px 32px #ffb34722, 0 2px 8px #ffb34722;
+            border: 2px solid #ffb347;
+        }
+        .feature h2 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #ffb347;
+            font-weight: 800;
+        }
+        .feature p {
+            font-size: 1em;
+            color: #ffe7c2;
+        }
+        footer {
+            background: #23190e;
+            color: #ffe7c2;
+            text-align: center;
+            padding: 24px 10px 12px 10px;
+            font-size: 1em;
+            border-top: 2px solid #ffb347;
+        }
+        @media (max-width: 900px) {
+            .features { flex-direction: column; align-items: center; padding: 1.5rem 0.5rem; border-radius: 24px; }
+            .feature { width: 100%; margin-bottom: 1.5rem; }
+        }
+        @media (max-width: 600px) {
+            .features { padding: 0.7rem 0.2rem; border-radius: 12px; margin: 1.2rem auto 0 auto; }
+            .feature { padding: 1rem 0.5rem; border-radius: 10px; }
+            .feature img { width: 60px; border-radius: 10px; }
+            .hero h1 { font-size: 1.3rem; padding: 0.1em 0.4em; border-radius: 10px; }
+            .hero p { font-size: 1rem; padding: 0.7em 1em; border-radius: 12px; border-left: 4px solid #ffe7c2; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Welcome to BabyAlevel</h1>
+        <p>Your interactive hub for O Level and A Level Computer Science resources, notes, and practice. Explore topics, learn, and master your exams!</p>
+        <div class="buttons">
+            <a href="{{ url_for('login') }}" class="btn"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="{{ url_for('register') }}" class="btn signup"><i class="fas fa-user-plus"></i> Sign Up</a>
+        </div>
+    </div>
+    <div class="alevel-section" style="max-width:700px;margin:3.5rem auto 0 auto;padding:2.5rem 2rem;background:#23190e;border-radius:32px;box-shadow:0 8px 32px #ffb34722;border:2px solid #ffb347;text-align:center;">
+        <h2 style="color:#ffb347;font-size:2.2rem;font-weight:800;margin-bottom:1.2rem;">A Level Computer Science</h2>
+        <p style="font-size:1.25rem;color:#ffe7c2;margin-bottom:2rem;">Both <span style="color:#ffb347;font-weight:bold;">Theory</span> and <span style="color:#ffb347;font-weight:bold;">Programming</span> resources are available for your exam success.</p>
+        <div style="display:flex;justify-content:center;gap:2.5rem;margin-bottom:2.5rem;flex-wrap:wrap;">
+            <div style="background:#18120a;border:2px solid #ffb347;border-radius:18px;box-shadow:0 4px 16px #ffb34722;padding:1.1em 2em;min-width:160px;max-width:100%;color:#ffb347;font-weight:700;font-size:1.13rem;display:flex;align-items:center;gap:0.7em;">
+                <i class="fas fa-book" style="font-size:1.5em;margin-right:0.5em;"></i> Notes
+            </div>
+            <div style="background:#18120a;border:2px solid #ffb347;border-radius:18px;box-shadow:0 4px 16px #ffb34722;padding:1.1em 2em;min-width:160px;max-width:100%;color:#ffb347;font-weight:700;font-size:1.13rem;display:flex;align-items:center;gap:0.7em;">
+                <i class="fas fa-question-circle" style="font-size:1.5em;margin-right:0.5em;"></i> Questions
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2025 BabyAlevel. All rights reserved. | Designed for O Level & A Level Computer Science students.</p>
+        <p>
+            <a href="https://github.com/SKirindu/CS" style="color:#6ee7b7;text-decoration:none;" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+        </p>
+    </footer>
+</body>
+</html>
