@@ -1,214 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login | BabyAlevel</title>
-  <link rel="icon" type="png" href="favicon.png">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --black: #18120a;
-      --white: #ffe7c2;
-      --gold: #ffb347;
-      --gray: #23190e;
-      --gray-border: #ffb347;
-      --shadow: 0 8px 32px 0 rgba(24,24,24,0.13);
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: var(--black);
-      min-height: 100vh;
-      margin: 0;
-      color: var(--white);
-      overflow-x: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .container {
-      background: var(--gray);
-      padding: 3.2rem 2.8rem 2.7rem 2.8rem; /* equal left/right padding */
-      border-radius: 32px;
-      box-shadow: var(--shadow);
-      width: 100%;
-      max-width: 420px;
-      border: 2.5px solid var(--gray-border);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      box-sizing: border-box;
-      margin: 0 auto;
-      position: relative;
-      top: 0;
-    }
-    h2 {
-      margin-bottom: 2rem;
-      color: var(--gold);
-      font-size: 2.1rem;
-      font-weight: 900;
-      text-align: center;
-      letter-spacing: 0.03em;
-      text-shadow: 0 2px 12px #ffb34722;
-    }
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 0.85rem 1rem;
-      margin-bottom: 1.3rem;
-      border: 2px solid var(--gray-border);
-      border-radius: 10px;
-      font-size: 1.08rem;
-      background: var(--white);
-      color: var(--black);
-      transition: border 0.2s, box-shadow 0.2s;
-      box-shadow: 0 1.5px 8px #ffb34722;
-      outline: none;
-      box-sizing: border-box; /* ensure padding included in width */
-    }
-    input[type="text"]:focus, input[type="password"]:focus {
-      border: 2px solid var(--gold);
-      box-shadow: 0 2px 16px #ffb34744;
-      background: #fffbe7;
-    }
-    button {
-      width: 100%;
-      padding: 0.9rem;
-      background: var(--gold);
-      border: none;
-      color: var(--black);
-      font-size: 1.13rem;
-      font-weight: 700;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: background 0.2s, box-shadow 0.2s;
-      box-shadow: 0 2px 12px #ffb34722;
-      margin-top: 0.2rem;
-      letter-spacing: 0.01em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.7em;
-    }
-    button:hover {
-      background: var(--white);
-      color: var(--gold);
-      box-shadow: 0 4px 24px #ffb34744;
-    }
-    .register-link {
-      margin-top: 1.5rem;
-      text-align: center;
-      font-size: 1rem;
-      color: var(--white);
-    }
-    .register-link a {
-      color: var(--gold);
-      text-decoration: underline;
-      font-weight: 700;
-      transition: color 0.2s;
-    }
-    .register-link a:hover {
-      color: var(--white);
-      text-decoration: underline;
-    }
-    .error-box {
-      color: var(--white);
-      background: #c0392b;
-      border: 2px solid #ffb347;
-      padding: 0.7em 1em;
-      border-radius: 12px;
-      margin-bottom: 1.2em;
-      text-align: center;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      box-shadow: 0 2px 12px #ffb34722;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.7em;
-      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-    }
-    .error-box i {
-      font-size: 1.3em;
-    }
+{% extends 'base.html' %}
+{% block title %}Login | BabyAlevel{% endblock %}
 
-    /* center and constrain the form inside the container for consistent spacing */
-    form {
-      width: 100%;
-      max-width: 360px; /* keeps inputs inset from container edges */
-      margin: 0 auto;
-      display: block;
-    }
+{% block content %}
+<style>
+  .auth-wrapper {
+    max-width: 400px;
+    margin: 4rem auto;
+  }
+  .auth-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3.5rem 2.5rem;
+  }
+  .auth-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0 0 2rem 0;
+    letter-spacing: 0.15em;
+    color: var(--text);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .form-group i {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+  }
+  .form-control {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text);
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+  .form-control:focus {
+    border-color: var(--accent);
+    background-color: var(--surface-hover);
+  }
+  .form-control:focus + i {
+    color: var(--accent);
+  }
+  .btn-submit {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--accent);
+    border: none;
+    color: var(--bg);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    margin-top: 1rem;
+    letter-spacing: 0.05em;
+  }
+  .btn-submit:hover {
+    background-color: #e2c29b;
+  }
+  .auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .auth-footer a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.2s ease;
+  }
+  .auth-footer a:hover {
+    color: var(--text);
+    text-decoration: underline;
+  }
+  .error-message {
+    background-color: rgba(201, 122, 100, 0.1);
+    border: 1px solid rgba(201, 122, 100, 0.3);
+    color: #f28b82;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+</style>
 
-    /* ensure button uses same box-sizing for exact alignment */
-    button {
-      box-sizing: border-box;
-    }
-    @keyframes shake {
-      10%, 90% { transform: translateX(-2px); }
-      20%, 80% { transform: translateX(4px); }
-      30%, 50%, 70% { transform: translateX(-8px); }
-      40%, 60% { transform: translateX(8px); }
-    }
-    @media (max-width: 500px) {
-      html, body {
-        min-height: 100vh;
-        height: 100vh;
-        width: 100vw;
-        overflow-x: hidden;
-        display: block;
-      }
-      body {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-      }
-      .container {
-        padding: 2rem 0.7rem 2rem 0.7rem;
-        border-radius: 18px;
-        max-width: 95vw;
-        min-height: unset;
-        box-shadow: none;
-        box-sizing: border-box;
-        overflow-y: auto;
-        margin: 0 auto;
-        position: relative;
-        top: 0;
-      }
-      h2 {
-        font-size: 1.3rem;
-      }
-      input[type="text"], input[type="password"] {
-        font-size: 0.98rem;
-        padding: 0.7rem 0.7rem;
-        min-width: 0;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      button {
-        font-size: 1rem;
-        padding: 0.7rem;
-      }
-      .register-link {
-        font-size: 0.95rem;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>Login</h2>
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h3>Login</h3>
     {% if error %}
-      <div class="error-box"><i class="fas fa-exclamation-triangle"></i> {{ error }}</div>
+      <div class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ error }}
+      </div>
     {% endif %}
     <form method="POST" action="/login">
-      <input type="text" name="username" placeholder="Username" required autofocus />
-      <input type="password" name="password" placeholder="Password" required />
-      <button type="submit"><i class="fas fa-sign-in-alt"></i> Log In</button>
+      <div class="form-group">
+        <input type="text" name="username" class="form-control" placeholder="Username" required autofocus />
+        <i class="fas fa-user"></i>
+      </div>
+      <div class="form-group">
+        <input type="password" name="password" class="form-control" placeholder="Password" required />
+        <i class="fas fa-lock"></i>
+      </div>
+      <button type="submit" class="btn-submit"><i class="fas fa-sign-in-alt"></i> Log In</button>
     </form>
-    <div class="register-link">
+    <div class="auth-footer">
       Don't have an account? <a href="/register">Register here</a>
     </div>
   </div>
-</body>
-</html>
+</div>
+{% endblock %}

@@ -4,166 +4,777 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}BabyAlevel{% endblock %}</title>
-  <link rel="icon" type="png" href="favicon.png">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+    :root {
+      --bg: #09090b;
+      --surface: #121215;
+      --surface-hover: #18181b;
+      --border: #232329;
+      --border-hover: #3f3f46;
+      
+      --accent: #d4b285;
+      --accent-muted: #a68c6c;
+      --olevel-accent: #ffd700; /* Bright gold sub-accent */
+      
+      --text: #f4f4f5;
+      --text-muted: #8b8b93;
+      
+      --font-heading: 'Cinzel', serif;
+      --font-body: 'DM Sans', sans-serif;
+      
+      --sidebar-width: 280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #18120a;
-      color: #ffe7c2;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
       margin: 0;
       min-height: 100vh;
     }
-    header {
-      background: #23190e;
-      color: #ffb347;
-      padding: 2.2rem 3.5rem 1.7rem 3.5rem;
+
+    /* Visitor Mode (Logged Out) */
+    body.visitor-mode {
+      display: flex;
+      flex-direction: column;
+    }
+
+    body.visitor-mode header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 3.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 4px 24px #ffb34722;
-      border-bottom: 4px solid #ffb347;
-      border-radius: 0 0 32px 32px;
+      background-color: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    header h1 {
+
+    body.visitor-mode header h1 {
       margin: 0;
-      font-weight: 900;
-      font-size: 2.3rem;
-      letter-spacing: 0.04em;
-      color: #ffb347;
-      background: none;
-      text-shadow: 0 2px 12px #ffb34722;
-      border-radius: 18px;
-      padding: 0.2em 0.8em;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+      color: var(--text);
+      font-weight: 700;
+      text-transform: uppercase;
     }
-    header nav {
+
+    body.visitor-mode header nav {
       display: flex;
       align-items: center;
+      gap: 1.8rem;
+    }
+
+    body.visitor-mode header nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      transition: color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+    }
+
+    body.visitor-mode header nav a:hover {
+      color: var(--accent);
+    }
+
+    body.visitor-mode main {
+      flex: 1;
+      max-width: 1000px;
+      width: 90%;
+      margin: 4rem auto;
+    }
+
+    body.visitor-mode footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+    }
+
+    /* Portal Mode (Logged In) */
+    body.portal-mode {
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background-color: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .sidebar-header {
+      padding: 2rem 2.2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-header h1 {
+      margin: 0;
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .sidebar-user {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .sidebar-user .avatar {
+      width: 36px;
+      height: 36px;
+      background-color: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      border: 1px solid var(--accent);
+      font-size: 0.95rem;
+    }
+
+    .sidebar-user .info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-user .username {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .sidebar-user .role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .sidebar-menu {
+      flex: 1;
+      padding: 2.2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      overflow-y: auto;
+    }
+
+    .sidebar-menu-label {
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      padding-left: 0.8rem;
+      text-transform: uppercase;
+    }
+
+    .sidebar-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .sidebar-link:hover {
+      color: var(--text);
+      background-color: var(--surface-hover);
+      border-color: var(--border);
+    }
+
+    .sidebar-link.active {
+      color: var(--accent);
+      background-color: rgba(212, 178, 133, 0.04);
+      border-color: rgba(212, 178, 133, 0.12);
+    }
+
+    /* Sidebar Widgets styling */
+    .sidebar-widget {
+      background-color: rgba(9, 9, 11, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    
+    .widget-title {
+      font-family: var(--font-heading);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    
+    .timer-display {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+    
+    .timer-controls {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .timer-controls button {
+      flex: 1;
+      background-color: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.4rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3em;
+    }
+    
+    .timer-controls button:hover {
+      color: var(--text);
+      border-color: var(--border-hover);
+    }
+    
+    .timer-controls button.active {
+      background-color: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+    
+    .calendar-month-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      text-align: center;
+      font-size: 0.68rem;
+    }
+    
+    .calendar-header-day {
+      color: var(--text-muted);
+      font-weight: 700;
+      padding-bottom: 4px;
+    }
+    
+    .calendar-day {
+      color: var(--text-muted);
+      padding: 4px 0;
+      border-radius: 3px;
+      transition: all 0.2s ease;
+    }
+    
+    .calendar-day.today {
+      color: var(--bg);
+      background-color: var(--accent);
+      font-weight: 700;
+    }
+    
+    .calendar-day.other-month {
+      opacity: 0.25;
+    }
+    
+    .calendar-day:hover:not(.today) {
+      background-color: var(--surface-hover);
+      color: var(--text);
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .sidebar-footer .sidebar-link {
+      padding: 0.6rem 1rem;
+    }
+
+    .portal-content {
+      overflow-y: auto;
+      height: 100vh;
+      padding: 4.5rem 5rem;
+    }
+
+    /* Portal layout footer placeholder */
+    .portal-footer {
+      max-width: 850px;
+      margin: 5rem auto 0 auto;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .portal-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .portal-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Centralized styles for subject pages inside workspace layout */
+    .pdf-list {
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .pdf-list h2 {
+      font-family: var(--font-heading);
+      color: var(--text);
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-top: 0;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .pdf-block {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      padding: 2.2rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .pdf-block:hover {
+      border-color: var(--accent);
+    }
+
+    .pdf-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .pdf-description {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.8rem;
+    }
+
+    .pdf-actions {
+      display: flex;
+      flex-direction: column;
       gap: 1.2rem;
     }
-    header nav a {
-      color: #ffb347;
-      background: #23190e;
+
+    .open-btn {
+      font-family: var(--font-body);
+      background-color: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 6px;
+      font-weight: 600;
+      padding: 0.7em 1.5em;
+      font-size: 0.9rem;
+      cursor: pointer;
       text-decoration: none;
-      font-weight: 700;
-      font-size: 1.13rem;
-      letter-spacing: 0.03em;
-      padding: 0.7em 1.7em;
-      border-radius: 24px;
-      border: 2px solid #ffb347;
-      margin-left: 1rem;
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-radius 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5em;
+      transition: all 0.2s ease;
+      letter-spacing: 0.02em;
     }
-    header nav a:hover {
-      background: #ffb347;
-      color: #23190e;
-      box-shadow: 0 6px 24px #ffb34744;
-      border-radius: 32px;
+
+    .open-btn:hover {
+      background-color: var(--accent);
+      color: var(--bg);
     }
-    main {
-      max-width: 1100px;
-      margin: 3.5rem auto 0 auto;
-      background: #23190e;
-      border-radius: 38px;
-      box-shadow: 0 12px 48px #ffb34722, 0 2.5px 16px #ffb34722;
-      padding: 2.5rem;
-      min-height: 600px;
-      border: 2px solid #ffb347;
-    }
-    footer {
+
+    embed {
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background-color: #16161b;
+      min-height: 500px;
       width: 100%;
-      background: #23190e;
-      color: #ffb347;
-      text-align: center;
-      padding: 2.2rem 0 1.2rem 0;
-      font-size: 1.08rem;
-      letter-spacing: 0.03em;
-      margin-top: 4rem;
-      border-top: 4px solid #ffb347;
-      box-shadow: 0 -4px 24px #ffb34722;
-      border-radius: 32px 32px 0 0;
     }
+
+    /* Mobile toggle and layout headers */
+    .portal-mobile-header {
+      display: none;
+    }
+
     @media (max-width: 900px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1.2rem 1rem 1rem 1rem;
-        border-radius: 0 0 18px 18px;
+      body.visitor-mode header {
+        padding: 1.2rem 2rem;
       }
-      header h1 {
-        font-size: 1.5rem;
-        padding: 0.1em 0.4em;
-        border-radius: 10px;
-      }
-      header nav {
-        gap: 0.7rem;
-        width: 100%;
-        justify-content: flex-start;
-        margin-top: 0.7rem;
-      }
-      header nav a {
-        font-size: 1rem;
-        padding: 0.5em 1em;
-        border-radius: 16px;
-      }
-      main {
-        padding: 1.2rem 0.5rem;
-        border-radius: 18px;
-        min-height: unset;
+      body.visitor-mode main {
+        margin: 2.5rem auto;
       }
     }
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0.7rem 0.5rem 0.5rem 0.5rem;
-        border-radius: 0 0 10px 10px;
+
+    @media (max-width: 768px) {
+      body.portal-mode {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: 100vh;
       }
-      header h1 {
-        font-size: 1.1rem;
-        padding: 0.05em 0.2em;
-        border-radius: 6px;
-      }
-      header nav {
-        gap: 0.4rem;
+      
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
         width: 100%;
-        justify-content: flex-start;
-        margin-top: 0.4rem;
+        height: calc(100vh - 60px);
+        z-index: 99;
       }
-      header nav a {
-        font-size: 0.95rem;
-        padding: 0.3em 0.7em;
-        border-radius: 10px;
+      
+      .sidebar.mobile-open {
+        display: flex;
       }
-      main {
-        padding: 0.5rem 0.1rem;
-        border-radius: 8px;
-        margin: 1.2rem auto 0 auto;
-        min-height: unset;
-        box-shadow: 0 1px 4px #ffb34722;
+      
+      .portal-mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        background-color: var(--surface);
+        border-bottom: 1px solid var(--border);
+        height: 60px;
+        box-sizing: border-box;
       }
-      footer {
-        font-size: 0.95rem;
-        padding: 1rem 0 0.7rem 0;
-        border-radius: 12px 12px 0 0;
-        margin-top: 1.5rem;
+      
+      .portal-mobile-header h2 {
+        margin: 0;
+        font-family: var(--font-heading);
+        font-size: 1.15rem;
+        letter-spacing: 0.15em;
+        color: var(--text);
+        text-transform: uppercase;
+      }
+      
+      .portal-mobile-toggle {
+        background: transparent;
+        border: none;
+        color: var(--text);
+        font-size: 1.1rem;
+        cursor: pointer;
+      }
+      
+      .portal-content {
+        height: calc(100vh - 60px);
+        padding: 2.5rem 1.5rem;
+      }
+      
+      body.visitor-mode header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.2rem;
+      }
+      
+      body.visitor-mode header nav {
+        width: 100%;
+        justify-content: center;
+        gap: 1.2rem;
       }
     }
   </style>
   {% block head %}{% endblock %}
 </head>
-<body>
-  <header>
-    <h1>BabyAlevel</h1>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/logout">Logout</a>
-    </nav>
-  </header>
-  <main>
+<body class="{% if session.get('user_id') %}portal-mode{% else %}visitor-mode{% endif %}">
+  {% if session.get('user_id') %}
+    <!-- Portal (Logged-in) Split Layout Header / Sidebar -->
+    <div class="portal-mobile-header">
+      <h2>BabyAlevel</h2>
+      <button class="portal-mobile-toggle" onclick="toggleMobileSidebar()">
+        <i class="fas fa-bars" id="menuIcon"></i>
+      </button>
+    </div>
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-header">
+        <h1>BabyAlevel</h1>
+      </div>
+      <div class="sidebar-user">
+        <div class="avatar">
+          {% if user %}{{ user.username[0] | upper }}{% else %}L{% endif %}
+        </div>
+        <div class="info">
+          <span class="username">{% if user %}{{ user.username }}{% else %}Learner{% endif %}</span>
+          <span class="role">Student Account</span>
+        </div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="sidebar-menu-label">Workspace</div>
+        <a href="/" class="sidebar-link active" id="sidebarHomeLink">
+          <i class="fas fa-columns"></i> Dashboard
+        </a>
+
+        <div class="sidebar-menu-label" style="margin-top: 1.5rem;">Study Tools</div>
+        
+        <!-- Pomodoro Widget -->
+        <div class="sidebar-widget">
+          <div class="widget-title"><i class="fas fa-hourglass-half"></i> Pomodoro Timer</div>
+          <div class="timer-display" id="pomoDisplay">25:00</div>
+          <div class="timer-controls">
+            <button id="pomoStartBtn" onclick="togglePomodoro()"><i class="fas fa-play"></i> Start</button>
+            <button id="pomoResetBtn" onclick="resetPomodoro()"><i class="fas fa-undo"></i> Reset</button>
+          </div>
+        </div>
+
+        <!-- Calendar Widget -->
+        <div class="sidebar-widget">
+          <div class="widget-title"><i class="fas fa-calendar-alt"></i> Study Calendar</div>
+          <div class="calendar-month-name" id="calendarMonthName">July 2026</div>
+          <div class="calendar-grid" id="calendarGrid">
+            <div class="calendar-header-day">M</div>
+            <div class="calendar-header-day">T</div>
+            <div class="calendar-header-day">W</div>
+            <div class="calendar-header-day">T</div>
+            <div class="calendar-header-day">F</div>
+            <div class="calendar-header-day">S</div>
+            <div class="calendar-header-day">S</div>
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-footer">
+        <a href="/logout" class="sidebar-link">
+          <i class="fas fa-sign-out-alt"></i> Log Out
+        </a>
+      </div>
+    </aside>
+  {% else %}
+    <!-- Visitor (Logged-out) Layout Header -->
+    <header>
+      <h1>BabyAlevel</h1>
+      <nav>
+        <a href="/"><i class="fas fa-home"></i> Home</a>
+        <a href="/login"><i class="fas fa-sign-in-alt"></i> Login</a>
+        <a href="/register"><i class="fas fa-user-plus"></i> Register</a>
+      </nav>
+    </header>
+  {% endif %}
+
+  <!-- Core Content Wrapper -->
+  <main class="{% if session.get('user_id') %}portal-content{% endif %}">
     {% block content %}{% endblock %}
+    
+    {% if session.get('user_id') %}
+      <div class="portal-footer">
+        <span>&copy; 2026 BabyAlevel Portal &mdash; CS Directory</span>
+        <a href="https://github.com/SKirindu/CS" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      </div>
+    {% endif %}
   </main>
-  <footer>
-    &copy; 2025 BabyAlevel &mdash; Empowering Learners Everywhere
-  </footer>
+
+  {% if not session.get('user_id') %}
+    <!-- Visitor Layout Footer -->
+    <footer>
+      &copy; 2026 BabyAlevel &mdash; Empowering Learners Everywhere
+      <br>
+      <a href="https://github.com/SKirindu/CS" style="color: var(--accent); text-decoration: none; font-size: 0.85rem; margin-top: 0.6rem; display: inline-flex; align-items: center; gap: 0.5em;" target="_blank"><i class="fab fa-github"></i> GitHub Repository</a>
+    </footer>
+  {% endif %}
+
+  <script>
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const icon = document.getElementById('menuIcon');
+      if (sidebar.classList.contains('mobile-open')) {
+        sidebar.classList.remove('mobile-open');
+        icon.className = 'fas fa-bars';
+      } else {
+        sidebar.classList.add('mobile-open');
+        icon.className = 'fas fa-times';
+      }
+    }
+
+    // Pomodoro Timer Logic
+    let pomoMinutes = 25;
+    let pomoSeconds = 0;
+    let pomoTimer = null;
+    let pomoIsRunning = false;
+    
+    function togglePomodoro() {
+      const startBtn = document.getElementById('pomoStartBtn');
+      if (!startBtn) return;
+      if (pomoIsRunning) {
+        clearInterval(pomoTimer);
+        pomoIsRunning = false;
+        startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+        startBtn.classList.remove('active');
+      } else {
+        pomoIsRunning = true;
+        startBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+        startBtn.classList.add('active');
+        pomoTimer = setInterval(updatePomodoro, 1000);
+      }
+    }
+    
+    function updatePomodoro() {
+      if (pomoSeconds === 0) {
+        if (pomoMinutes === 0) {
+          clearInterval(pomoTimer);
+          pomoIsRunning = false;
+          const startBtn = document.getElementById('pomoStartBtn');
+          if (startBtn) {
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+            startBtn.classList.remove('active');
+          }
+          alert('Study session complete! Take a break.');
+          resetPomodoro();
+          return;
+        }
+        pomoMinutes--;
+        pomoSeconds = 59;
+      } else {
+        pomoSeconds--;
+      }
+      displayPomodoro();
+    }
+    
+    function resetPomodoro() {
+      clearInterval(pomoTimer);
+      pomoIsRunning = false;
+      pomoMinutes = 25;
+      pomoSeconds = 0;
+      const startBtn = document.getElementById('pomoStartBtn');
+      if (startBtn) {
+        startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+        startBtn.classList.remove('active');
+      }
+      displayPomodoro();
+    }
+    
+    function displayPomodoro() {
+      const display = document.getElementById('pomoDisplay');
+      if (!display) return;
+      const minStr = pomoMinutes.toString().padStart(2, '0');
+      const secStr = pomoSeconds.toString().padStart(2, '0');
+      display.textContent = `${minStr}:${secStr}`;
+    }
+
+    // Dynamic Calendar Logic
+    function renderCalendar() {
+      const calendarGrid = document.getElementById('calendarGrid');
+      if (!calendarGrid) return;
+      
+      const headerDays = calendarGrid.querySelectorAll('.calendar-header-day');
+      calendarGrid.innerHTML = '';
+      headerDays.forEach(day => calendarGrid.appendChild(day));
+      
+      const today = new Date();
+      const currentYear = today.getFullYear();
+      const currentMonth = today.getMonth();
+      
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const monthHeader = document.getElementById('calendarMonthName');
+      if (monthHeader) {
+        monthHeader.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+      }
+      
+      const firstDay = new Date(currentYear, currentMonth, 1);
+      let startDayOfWeek = firstDay.getDay();
+      startDayOfWeek = startDayOfWeek === 0 ? 6 : startDayOfWeek - 1;
+      
+      const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const prevTotalDays = new Date(currentYear, currentMonth, 0).getDate();
+      
+      for (let i = startDayOfWeek - 1; i >= 0; i--) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day other-month';
+        dayCell.textContent = prevTotalDays - i;
+        calendarGrid.appendChild(dayCell);
+      }
+      
+      for (let day = 1; day <= totalDays; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day';
+        dayCell.textContent = day;
+        if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+          dayCell.classList.add('today');
+        }
+        calendarGrid.appendChild(dayCell);
+      }
+      
+      const currentCells = calendarGrid.querySelectorAll('.calendar-day').length;
+      const remainingCells = 42 - currentCells;
+      for (let day = 1; day <= remainingCells; day++) {
+        const dayCell = document.createElement('div');
+        dayCell.className = 'calendar-day other-month';
+        dayCell.textContent = day;
+        calendarGrid.appendChild(dayCell);
+      }
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      displayPomodoro();
+      renderCalendar();
+    });
+  </script>
 </body>
 </html>

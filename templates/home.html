@@ -1,289 +1,315 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BabyAlevel - Computer Science</title>
-  <link rel="icon" type="png" href="favicon.png">
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #18120a;
-      color: #ffe7c2;
-      margin: 0;
-      min-height: 100vh;
+{% extends 'base.html' %}
+{% block title %}Workspace | BabyAlevel{% endblock %}
+
+{% block content %}
+<style>
+  .portal-header-info {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .portal-header-info h2 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    letter-spacing: 0.1em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+  .portal-header-info p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+  
+  .level-switcher {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2rem;
+  }
+  .switcher-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.8rem 1.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    letter-spacing: 0.1em;
+  }
+  .switcher-btn:hover {
+    color: var(--text);
+    border-color: var(--border-hover);
+  }
+  .switcher-btn.selected {
+    color: var(--accent);
+    border-color: var(--accent);
+    background-color: rgba(212, 178, 133, 0.04);
+  }
+  
+  .switcher-btn#olevelBtn.selected {
+    color: var(--olevel-accent);
+    border-color: var(--olevel-accent);
+    background-color: rgba(255, 215, 0, 0.04);
+  }
+
+  .topics-section {
+    display: none;
+    flex-direction: column;
+    animation: fadeIn 0.4s ease forwards;
+  }
+  .section-divider-label {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    margin-bottom: 2.2rem;
+    text-transform: uppercase;
+  }
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+  }
+  
+  .topic-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideUp 0.3s ease forwards;
+    min-height: 180px;
+  }
+  
+  .topic-card:hover {
+    border-color: var(--accent);
+    background-color: var(--surface-hover);
+  }
+  
+  .topics-grid.olevel-grid .topic-card:hover {
+    border-color: var(--olevel-accent);
+  }
+
+  .topic-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .topic-card-icon {
+    font-size: 1.5rem;
+    color: var(--accent);
+  }
+  
+  .topics-grid.olevel-grid .topic-card-icon {
+    color: var(--olevel-accent);
+  }
+
+  .topic-card-num {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  
+  .topic-card-name {
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+  
+  .topic-card-link {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    margin-top: auto;
+    transition: color 0.2s ease;
+  }
+  
+  .topic-card:hover .topic-card-link {
+    color: var(--accent);
+  }
+  
+  .topics-grid.olevel-grid .topic-card:hover .topic-card-link {
+    color: var(--olevel-accent);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-    .container {
-      max-width: 900px;
-      margin: 3.5rem auto 0 auto;
-      background: #23190e;
-      border-radius: 38px;
-      box-shadow: 0 12px 48px #ffb34722, 0 2.5px 16px #ffb34722;
-      padding: 3rem 2rem 2.5rem 2rem;
-      border: 2px solid #ffb347;
-      display: flex;
+  }
+
+  @media (max-width: 768px) {
+    .portal-header-info h2 {
+      font-size: 1.8rem;
+    }
+    .level-switcher {
       flex-direction: column;
-      align-items: center;
+      gap: 1rem;
     }
-    h1 {
-      color: #ffb347;
-      font-size: 2.7rem;
-      font-weight: 900;
-      margin-bottom: 1.2rem;
-      text-align: center;
-      letter-spacing: 0.01em;
-      text-shadow: 0 2px 12px #ffb34722;
-    }
-    .welcome-desc {
-      font-size: 1.25rem;
-      color: #23190e;
-      background: linear-gradient(90deg, #ffb347 80%, #ffe7c2 100%);
-      padding: 1.3em 2.2em;
-      border-radius: 24px;
-      box-shadow: 0 2px 12px #ffb34722;
-      border-left: 8px solid #ffe7c2;
-      font-weight: 700;
-      margin-bottom: 2.2rem;
-      text-align: center;
-      max-width: 700px;
-    }
-    .main-image {
-      width: 100%;
-      max-width: 600px;
-      border-radius: 32px;
-      margin: 2.2rem 0 2.2rem 0;
-      box-shadow: 0 4px 32px #ffb34722, 0 2px 8px #ffb34722;
-      border: 4px solid #ffb347;
-      display: block;
-      object-fit: cover;
-      background: #232526;
-      transition: box-shadow 0.33s cubic-bezier(.4,0,.2,1), border-radius 0.33s cubic-bezier(.4,0,.2,1);
-    }
-    h2 {
-      color: #ffb347;
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-bottom: 2.2rem;
-      text-align: center;
-      letter-spacing: 0.01em;
-    }
-    .level-select {
-      display: flex;
-      gap: 2.5rem;
-      margin-bottom: 2.5rem;
-      justify-content: center;
-    }
-    .level-btn {
-      background: #23190e;
-      color: #ffb347;
-      border: 2.5px solid #ffb347;
-      border-radius: 24px;
-      font-size: 1.3rem;
-      font-weight: 700;
-      padding: 1.2em 2.5em;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-radius 0.2s;
-      box-shadow: 0 2px 12px #ffb34722;
-    }
-    .level-btn.selected, .level-btn:hover {
-      background: #ffb347;
-      color: #23190e;
-      border-radius: 32px;
-      box-shadow: 0 6px 24px #ffb34744;
-    }
-    .topics-menu {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.2rem;
+    .switcher-btn {
       width: 100%;
       justify-content: center;
-      margin-top: 2.5rem;
-      box-sizing: border-box;
-      animation: fadeInUp 0.7s cubic-bezier(.4,2,.6,1);
     }
-    .topic-menu-item {
-      background: #18120a;
-      border: 2.5px solid #ffb347;
-      border-radius: 18px;
-      box-shadow: 0 4px 16px #ffb34722;
-      padding: 1.1em 1.7em;
-      display: flex;
-      align-items: center;
-      gap: 0.7em;
-      font-size: 1.13rem;
-      font-weight: 700;
-      color: #ffb347;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s, border-radius 0.2s;
-      text-align: left;
-      min-width: 160px;
-      max-width: 100%;
-      outline: none;
-      user-select: none;
-      animation: popIn 0.7s cubic-bezier(.4,2,.6,1);
-    }
-    .topic-menu-item .topic-icon {
-      font-size: 1.5em;
-      display: inline-block;
-      margin-right: 0.5em;
-      filter: drop-shadow(0 2px 8px #ffb34744);
-      transition: transform 0.2s;
-    }
-    .topic-menu-item:hover, .topic-menu-item:focus {
-      background: #ffb347;
-      color: #23190e;
-      border: 2.5px solid #ffe7c2;
-      border-radius: 28px;
-      box-shadow: 0 8px 32px #ffb34744;
-    }
-    .topic-menu-item:hover .topic-icon, .topic-menu-item:focus .topic-icon {
-      transform: scale(1.18) rotate(-8deg);
-      filter: drop-shadow(0 2px 8px #ffe7c2);
-    }
-    .olevel-menu .topic-menu-item {
-      animation: olevelPop 0.7s cubic-bezier(.4,2,.6,1);
-      border-color: #ff7f50;
-      color: #ff7f50;
-    }
-    .olevel-menu .topic-menu-item .topic-icon {
-      color: #ff7f50;
-      filter: drop-shadow(0 2px 8px #ff7f5044);
-      animation: olevelIconPulse 1.2s infinite alternate;
-    }
-    .olevel-menu .topic-menu-item:hover, .olevel-menu .topic-menu-item:focus {
-      background: #ff7f50;
-      color: #23190e;
-      border: 2.5px solid #ffe7c2;
-      border-radius: 28px;
-      box-shadow: 0 8px 32px #ff7f5044;
-    }
-    .olevel-menu .topic-menu-item:hover .topic-icon, .olevel-menu .topic-menu-item:focus .topic-icon {
-      transform: scale(1.18) rotate(8deg);
-      filter: drop-shadow(0 2px 8px #ffe7c2);
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px) scale(0.98); }
-      to { opacity: 1; transform: none; }
-    }
-    @keyframes popIn {
-      from { opacity: 0; transform: scale(0.7); }
-      to { opacity: 1; transform: scale(1); }
-    }
-    @keyframes iconBounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-8px) scale(1.1); }
-    }
-    @keyframes olevelPop {
-      from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
-      to { opacity: 1; transform: scale(1) rotate(0); }
-    }
-    @keyframes olevelIconPulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.18); }
-    }
-    @media (max-width: 900px) {
-      .container { padding: 1.5rem 0.5rem; border-radius: 24px; }
-      .main-image { max-width: 100%; margin: 1.2rem 0; border-radius: 18px; }
-      .topics-menu { gap: 0.7rem; }
-      .topic-menu-item { font-size: 1rem; min-width: 120px; padding: 0.7em 1em; border-radius: 12px; }
-      .topic-menu-item .topic-icon { font-size: 1.1em; }
-    }
-    @media (max-width: 600px) {
-      .container { padding: 0.7rem 0.2rem; border-radius: 12px; margin: 1.2rem auto 0 auto; }
-      h1 { font-size: 1.3rem; padding: 0.1em 0.4em; border-radius: 10px; }
-      .welcome-desc { font-size: 1rem; padding: 0.7em 1em; border-radius: 12px; border-left: 4px solid #ffe7c2; }
-      .main-image { max-width: 100%; margin: 0.7rem 0; border-radius: 10px; border-width: 2px; }
-      h2 { font-size: 1.3rem; padding: 0.1em 0.4em; border-radius: 10px; }
-      .level-select { gap: 1rem; }
-      .level-btn { font-size: 1rem; padding: 0.5em 1em; border-radius: 16px; }
-      .topics-menu { gap: 1rem; }
-      .topic-menu-item { font-size: 0.95rem; min-width: 100px; padding: 0.5em 0.7em; border-radius: 10px; }
-      .topic-menu-item .topic-icon { font-size: 1em; }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Welcome to BabyAlevel</h1>
-    <div class="welcome-desc">
-      Unlock your potential with BabyAlevel's comprehensive Computer Science platform. Whether you are preparing for O Level or A Level, our curated resources, interactive topics, and professional design will help you master every concept. Start your journey to academic excellence today!
-    </div>
-    <img class="main-image" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Computer Science Illustration">
-    <h2>Select Your Level</h2>
-    <div class="level-select">
-      <button class="level-btn" id="olevelBtn" onclick="window.location.href='/olevel'">O Level</button>
-      <button class="level-btn" id="alevelBtn" onclick="window.location.href='/alevel'">A Level</button>
-    </div>
-    <div id="topicsMenu" class="topics-menu" style="display:none;"></div>
-  </div>
-  <script>
-    const olevelSections = [
-      { name: 'Data Repre', icon: '💾' },
-      { name: 'Communications', icon: '📡' },
-      { name: 'Hardware', icon: '🖥️' },
-      { name: 'Software', icon: '💻' },
-      { name: 'Security', icon: '🔒' },
-      { name: 'Ethics', icon: '⚖️' },
-      { name: 'Databases', icon: '🗄️' },
-      { name: 'AI', icon: '🤖' },
-      { name: 'Data Types', icon: '🔢' },
-      { name: 'Algo desgn and problem solving', icon: '🧩' },
-      { name: 'Programming', icon: '👨‍💻' },
-      { name: 'Software Devolopment', icon: '🛠️' },
-      { name: 'Computational thinkinh', icon: '🧠' }
-    ];
-    const alevelSections = [
-      { name: 'Data Representation', icon: '💾', path: '/alevel/data_representation' },
-      { name: 'Communications', icon: '📡', path: '/alevel/communications' },
-      { name: 'Hardware', icon: '🖥️', path: '/alevel/hardware' },
-      { name: 'Software', icon: '💻', path: '/alevel/software' },
-      { name: 'Security', icon: '🔒', path: '/alevel/security' },
-      { name: 'Ethics', icon: '⚖️', path: '/alevel/ethics' },
-      { name: 'Databases', icon: '🗄️', path: '/alevel/databases' },
-      { name: 'Programming', icon: '👨‍💻', path: '/alevel/programming' },
-      { name: 'Data Types', icon: '🔢', path: '/alevel/data_types' },
-      { name: 'Algo desgn', icon: '🧩', path: '/alevel/algo_desgn' },
-      { name: 'Software', icon: '💻', path: '/alevel/software' },
-      { name: 'Software Devolopment', icon: '🛠️', path: '/alevel/software_devolopment' }
-    ];
-    const topicsMenu = document.getElementById('topicsMenu');
-    document.getElementById('olevelBtn').onclick = function() {
-      this.classList.add('selected');
-      document.getElementById('alevelBtn').classList.remove('selected');
-      renderTopicsMenu(olevelSections, true);
-    };
-    document.getElementById('alevelBtn').onclick = function() {
-      this.classList.add('selected');
-      document.getElementById('olevelBtn').classList.remove('selected');
-      renderTopicsMenu(alevelSections, false);
-    };
-    function renderTopicsMenu(sections, isOlevel) {
-      if (!sections.length) {
-        topicsMenu.style.display = 'none';
-        topicsMenu.innerHTML = '';
-        return;
+  }
+</style>
+
+<div class="portal-header-info">
+  <h2>Student Workspace</h2>
+  <p>Select your course curriculum below to access standard directories, practice files, and study resources.</p>
+</div>
+
+<div class="level-switcher">
+  <button class="switcher-btn" id="olevelBtn">
+    <i class="fas fa-graduation-cap"></i> O Level Course
+  </button>
+  <button class="switcher-btn" id="alevelBtn">
+    <i class="fas fa-book-reader"></i> A Level Course
+  </button>
+</div>
+
+<div id="topicsContainer" class="topics-section">
+  <div class="section-divider-label" id="topicsLevelTitle">Topics</div>
+  <div id="topicsGrid" class="topics-grid"></div>
+</div>
+
+<script>
+  const olevelSections = [
+    { name: 'Data Repre', icon: '💾' },
+    { name: 'Communications', icon: '📡' },
+    { name: 'Hardware', icon: '🖥️' },
+    { name: 'Software', icon: '💻' },
+    { name: 'Security', icon: '🔒' },
+    { name: 'Ethics', icon: '⚖️' },
+    { name: 'Databases', icon: '🗄️' },
+    { name: 'AI', icon: '🤖' },
+    { name: 'Data Types', icon: '🔢' },
+    { name: 'Algo desgn and problem solving', icon: '🧩' },
+    { name: 'Programming', icon: '👨‍💻' },
+    { name: 'Software Devolopment', icon: '🛠️' },
+    { name: 'Computational thinking', icon: '🧠' }
+  ];
+
+  const alevelSections = [
+    { name: 'Data Representation', icon: '💾', path: '/alevel/data_representation' },
+    { name: 'Communications', icon: '📡', path: '/alevel/communications' },
+    { name: 'Hardware', icon: '🖥️', path: '/alevel/hardware' },
+    { name: 'Software', icon: '💻', path: '/alevel/software' },
+    { name: 'Security', icon: '🔒', path: '/alevel/security' },
+    { name: 'Ethics', icon: '⚖️', path: '/alevel/ethics' },
+    { name: 'Databases', icon: '🗄️', path: '/alevel/databases' },
+    { name: 'Programming', icon: '👨‍💻', path: '/alevel/programming' },
+    { name: 'Data Types', icon: '🔢', path: '/alevel/data_types' },
+    { name: 'Algo desgn', icon: '🧩', path: '/alevel/algo_desgn' },
+    { name: 'Software Devolopment', icon: '🛠️', path: '/alevel/software_devolopment' }
+  ];
+
+  const olevelBtn = document.getElementById('olevelBtn');
+  const alevelBtn = document.getElementById('alevelBtn');
+
+  olevelBtn.onclick = function() {
+    this.classList.add('selected');
+    alevelBtn.classList.remove('selected');
+    renderTopicsMenu(olevelSections, true);
+  };
+
+  alevelBtn.onclick = function() {
+    this.classList.add('selected');
+    olevelBtn.classList.remove('selected');
+    renderTopicsMenu(alevelSections, false);
+  };
+
+  function renderTopicsMenu(sections, isOlevel) {
+    const container = document.getElementById('topicsContainer');
+    const grid = document.getElementById('topicsGrid');
+    const levelTitle = document.getElementById('topicsLevelTitle');
+
+    levelTitle.textContent = isOlevel ? 'O Level Course Directory' : 'A Level Course Directory';
+    grid.className = 'topics-grid' + (isOlevel ? ' olevel-grid' : '');
+    grid.innerHTML = '';
+
+    sections.forEach((sec, idx) => {
+      const item = document.createElement(sec.path ? 'a' : 'div');
+      item.className = 'topic-card';
+      if (sec.path) {
+        item.href = sec.path;
       }
-      topicsMenu.style.display = 'flex';
-      topicsMenu.className = 'topics-menu' + (isOlevel ? ' olevel-menu' : '');
-      topicsMenu.innerHTML = '';
-      sections.forEach(sec => {
-        const item = document.createElement('button');
-        item.className = 'topic-menu-item';
-        item.type = 'button';
-        item.tabIndex = 0;
-        const icon = document.createElement('span');
-        icon.className = 'topic-icon';
-        icon.textContent = sec.icon || '📚';
-        item.appendChild(icon);
-        const label = document.createElement('span');
-        label.textContent = sec.name || sec;
-        item.appendChild(label);
-        if (!isOlevel && sec.path) {
-          item.onclick = () => { window.location.href = sec.path; };
-        }
-        topicsMenu.appendChild(item);
-      });
-    }
-  </script>
-</body>
-</html>
+
+      // Card Header
+      const cardHeader = document.createElement('div');
+      cardHeader.className = 'topic-card-header';
+      
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'topic-card-icon';
+      iconSpan.textContent = sec.icon || '📚';
+      
+      const numSpan = document.createElement('span');
+      numSpan.className = 'topic-card-num';
+      numSpan.textContent = (idx + 1).toString().padStart(2, '0');
+      
+      cardHeader.appendChild(iconSpan);
+      cardHeader.appendChild(numSpan);
+
+      // Card Name
+      const nameSpan = document.createElement('div');
+      nameSpan.className = 'topic-card-name';
+      nameSpan.textContent = sec.name;
+
+      // Card Link indicator
+      const linkSpan = document.createElement('div');
+      linkSpan.className = 'topic-card-link';
+      linkSpan.innerHTML = sec.path ? 'Open Directory <i class="fas fa-arrow-right"></i>' : 'Inactive Module';
+
+      item.appendChild(cardHeader);
+      item.appendChild(nameSpan);
+      item.appendChild(linkSpan);
+
+      // Apply staggering animation delays
+      item.style.animationDelay = (idx * 0.02) + 's';
+
+      grid.appendChild(item);
+    });
+
+    container.style.display = 'flex';
+    
+    // Smooth scrolling to topics list
+    setTimeout(() => {
+      container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
+  }
+</script>
+{% endblock %}
